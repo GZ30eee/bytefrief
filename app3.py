@@ -7,9 +7,16 @@ import docx
 import PyPDF2
 from pptx import Presentation
 from io import BytesIO
+from spacy.cli import download
 
-# Load NLP model
-nlp = spacy.load("en_core_web_sm")
+# Try to load the model; if not found, download it
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    print("Downloading 'en_core_web_sm' model...")
+    download("en_core_web_sm")  # Download the model
+    nlp = spacy.load("en_core_web_sm")  # Load the model after download
+
 
 # Function to fetch random text
 def fetch_random_paragraph():
